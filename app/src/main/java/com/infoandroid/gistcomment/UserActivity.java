@@ -3,13 +3,23 @@ package com.infoandroid.gistcomment;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.infoandroid.gistcomment.OkhttpRest.ApiIds;
 import com.infoandroid.gistcomment.OkhttpRest.ResponceListeners;
 import com.infoandroid.gistcomment.OkhttpRest.RestClass;
+import com.infoandroid.gistcomment.adapter.GistRepoAdapter;
+import com.infoandroid.gistcomment.model.GistRepo;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class UserActivity extends Activity implements ResponceListeners{
@@ -18,11 +28,15 @@ public class UserActivity extends Activity implements ResponceListeners{
     public static final String TAG = UserActivity.class.getSimpleName();
     public static final String PREFERENCE = "github_prefs";
     RestClass restClass;
-
+RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        recyclerView=findViewById(R.id.recycler_view);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         sharedPreferences = getSharedPreferences(PREFERENCE, 0);
         String oauthToken = sharedPreferences.getString("oauth_token", null);
         Log.d(TAG, "oauth token for github loged in user is :" + oauthToken);
@@ -31,7 +45,8 @@ public class UserActivity extends Activity implements ResponceListeners{
                 "}";
         restClass = new RestClass(UserActivity.this);
         try {
-            restClass.callback(UserActivity.this).postJsonRequest(ApiIds.API_USER_LIST, "https://api.github.com/gists/cc05a5802850c1e109d932adb59b01de/comments",oauthToken,bodyData);
+            restClass.callback(this).asynchronousGet(ApiIds.API_USER_LIST,"https://api.github.com/users/infoAndroid/gists","");
+            //restClass.callback(UserActivity.this).postJsonRequest(ApiIds.API_USER_LIST, "https://api.github.com/gists/cc05a5802850c1e109d932adb59b01de/comments",oauthToken,bodyData);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,6 +54,33 @@ public class UserActivity extends Activity implements ResponceListeners{
 
     @Override
     public void onSuccessResponce(int apiId, Object responce) {
+        final List<GistRepo> list;
+                try {
+                    GistRepo[] base= new Gson().fromJson(responce.toString(),GistRepo[].class);
+                 list = Arrays.asList(base);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            GistRepoAdapter gistRepoAdapter = new GistRepoAdapter(UserActivity.this, list);
+                            recyclerView.setAdapter(gistRepoAdapter);
+
+                        }
+                    });
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
+        /*runOnUiThread(new Runnable() {
+            public void run() {
+                GistRepoAdapter gistRepoAdapter = new GistRepoAdapter(this, List);
+                recyclerView.setAdapter(gistRepoAdapter);
+            }
+
+        }*/
 
     }
 

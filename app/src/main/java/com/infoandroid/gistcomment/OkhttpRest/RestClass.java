@@ -3,7 +3,10 @@ package com.infoandroid.gistcomment.OkhttpRest;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
+
+import com.infoandroid.gistcomment.preferences.AppSharedPreference;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +38,7 @@ public class RestClass extends BaseRestClient{
         return this;
     }
 
-    public void postJsonRequest(final int apiID, String postUrl, String auth,String postBody) throws IOException {
+   /* public void postJsonRequest(final int apiID, String postUrl, String auth,String postBody) throws IOException {
         showProgDialog("Loding...");
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON, postBody);
@@ -63,13 +66,43 @@ public class RestClass extends BaseRestClient{
             }
         });
     }
+*/
+
+    public void postJsonRequest(final int apiID, String postUrl, String auth,String postBody) throws IOException {
+        showProgDialog("Loding...");
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(JSON, postBody);
+        final String basic = "Basic " + Base64.encodeToString(auth.getBytes(), Base64.NO_WRAP);
+        Request request = new Request.Builder()
+                .url("https://api.github.com/gists/cc05a5802850c1e109d932adb59b01de/comments")
+                .addHeader("Authorization",basic)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                call.cancel();
+                responceListeners.onFailearResponce(apiID,e.getMessage());
+                hideProgDialog();
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String JsonData = response.body().string();
+                Log.d("TAG", JsonData);
+                responceListeners.onSuccessResponce(apiID,JsonData);
+                hideProgDialog();
+            }
+        });
+    }
 
 
     public void asynchronousGet(final int apiID, String getUrl, String token) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(getUrl)
-                .header("Authorization","Bearer "+token)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -82,7 +115,7 @@ public class RestClass extends BaseRestClient{
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 responceListeners.onSuccessResponce(apiID,response.body().string());
-               // Log.d("TAG", response.body().string());
+            //    Log.d("TAG", response.body().string());
             }
         });
     }
