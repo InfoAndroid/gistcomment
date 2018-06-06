@@ -14,10 +14,13 @@ import com.infoandroid.gistcomment.OkhttpRest.ResponceListeners;
 import com.infoandroid.gistcomment.OkhttpRest.RestClass;
 import com.infoandroid.gistcomment.adapter.GistRepoAdapter;
 import com.infoandroid.gistcomment.model.GistRepo;
+import com.infoandroid.gistcomment.preferences.AppSharedPreference;
 
 import org.json.JSONArray;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +30,8 @@ public class UserActivity extends Activity implements ResponceListeners{
     SharedPreferences sharedPreferences;
     public static final String TAG = UserActivity.class.getSimpleName();
     public static final String PREFERENCE = "github_prefs";
+    String url;
+    String repoName;
     RestClass restClass;
 RecyclerView recyclerView;
     @Override
@@ -39,13 +44,20 @@ RecyclerView recyclerView;
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         sharedPreferences = getSharedPreferences(PREFERENCE, 0);
         String oauthToken = sharedPreferences.getString("oauth_token", null);
+        url= AppSharedPreference.getString("url","",UserActivity.this);
+        try {
+            URL aURL = new URL(url);
+            repoName=aURL.getFile();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         Log.d(TAG, "oauth token for github loged in user is :" + oauthToken);
         String bodyData="{\n" +
                 "  \"body\": \"Just commenting for the sake of commenting from Android App hahaha\"\n" +
                 "}";
         restClass = new RestClass(UserActivity.this);
         try {
-            restClass.callback(this).asynchronousGet(ApiIds.API_USER_LIST,"https://api.github.com/users/infoAndroid/gists","");
+            restClass.callback(this).asynchronousGet(ApiIds.API_USER_LIST,"https://api.github.com/users"+repoName+"/gists","");
             //restClass.callback(UserActivity.this).postJsonRequest(ApiIds.API_USER_LIST, "https://api.github.com/gists/cc05a5802850c1e109d932adb59b01de/comments",oauthToken,bodyData);
         } catch (IOException e) {
             e.printStackTrace();

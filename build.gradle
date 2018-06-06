@@ -25,3 +25,24 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+ext {
+    //Other
+    targetSdkVersion = 27
+    minSdkVersion = 14
+    compileSdkVersion = targetSdkVersion
+    buildToolsVersion = '27.0.0'
+    supportLibVersion = '27.0.0'
+    playServicesVersion = '11.4.2'
+
+    // Library Info
+    libVersionCode = 12
+    libVersionName = '2.1.2'
+    libPomUrl = 'https://github.com/nisrulz/qreader'
+    libGithubRepo = 'nisrulz/qreader'
+
+
+    libModuleName = 'qreader'
+    libModuleDesc =
+            'Android library that uses google\'s mobile vision api and simplify the QR code reading process'
+    libBintrayName = 'com.github.nisrulz:qreader'
+}
