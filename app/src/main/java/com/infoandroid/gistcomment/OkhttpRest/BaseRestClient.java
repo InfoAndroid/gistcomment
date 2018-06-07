@@ -14,7 +14,7 @@ public class BaseRestClient {
     //private ConnectionDetector cd;
     private String pDialogMessage = "Loading...";
 
-    protected BaseRestClient(Context _context) {
+    public BaseRestClient(Context _context) {
         this._context = _context;
         init();
     }

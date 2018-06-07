@@ -1,5 +1,6 @@
 package com.infoandroid.gistcomment;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,9 +24,14 @@ import butterknife.ButterKnife;
 public class CommentActivity extends AppCompatActivity implements ResponceListeners{
     @BindView(R.id.edt_comment)
     EditText edtComment;
- @BindView(R.id.button)
- Button button;
-    RestClass restClass;
+
+     @BindView(R.id.button)
+     Button button;
+
+     @BindView(R.id.rootView)
+     ConstraintLayout rootView;
+
+        RestClass restClass;
 
 
     @Override
@@ -49,8 +55,10 @@ public class CommentActivity extends AppCompatActivity implements ResponceListen
                 try {
                     String username = AppSharedPreference.getString("name","",CommentActivity.this);
                     String password = AppSharedPreference.getString("pass","",CommentActivity.this);;
+                    String id = AppSharedPreference.getString("id","",CommentActivity.this);;
                     String credentials = username + ":" + password;
-                    restClass.callback(CommentActivity.this).postJsonRequest(ApiIds.API_USER_LIST, "https://api.github.com/gists/cc05a5802850c1e109d932adb59b01de/comments",credentials,comment);
+                    restClass.callback(CommentActivity.this).postJsonRequest(ApiIds.API_USER_LIST, "https://api.github.com/gists/"+id+"/comments",credentials,comment);
+                    restClass.showProgDialog();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -61,11 +69,15 @@ public class CommentActivity extends AppCompatActivity implements ResponceListen
 
     @Override
     public void onSuccessResponce(int apiId, Object responce) {
+        restClass.showErrorSnackBar(rootView,"your comment successfully posted");
+        restClass.hideProgDialog();
+        finish();
 
     }
 
     @Override
     public void onFailearResponce(int apiId, String error) {
-
+        restClass.hideProgDialog();
+        finish();
     }
 }

@@ -3,6 +3,7 @@ package com.infoandroid.gistcomment.auth;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,10 @@ import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.infoandroid.gistcomment.OkhttpRest.BaseRestClient;
 import com.infoandroid.gistcomment.R;
 import com.infoandroid.gistcomment.UserActivity;
+import com.infoandroid.gistcomment.preferences.AppSharedPreference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +41,7 @@ public class OauthActivity extends AppCompatActivity {
     public static String CLIENT_ID = "";
     public static String CLIENT_SECRET = "";
     public static String ACTIVITY_NAME = "";
+    BaseRestClient  baseRestClient;
 
     private static final String TAG = "github-oauth";
 
@@ -55,12 +59,10 @@ public class OauthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oauth);
-
         scopeList = new ArrayList<>();
         scopeAppendToUrl = "";
-
+        baseRestClient = new BaseRestClient(this);
         Intent intent = getIntent();
-
         if (intent.getExtras() != null) {
             CLIENT_ID = intent.getStringExtra("id");
             PACKAGE = intent.getStringExtra("package");
@@ -73,7 +75,6 @@ public class OauthActivity extends AppCompatActivity {
             Log.d(TAG, "intent extras null");
             finish();
         }
-
         String url_load = GITHUB_URL + "?client_id=" + CLIENT_ID;
 
         if (isScopeDefined) {
@@ -103,6 +104,13 @@ public class OauthActivity extends AppCompatActivity {
 
         webview.getSettings().setJavaScriptEnabled(true);
         webview.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                baseRestClient.showProgDialog();
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 super.shouldOverrideUrlLoading(view, url);
@@ -127,7 +135,15 @@ public class OauthActivity extends AppCompatActivity {
                 }
                 return false;
             }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                baseRestClient.hideProgDialog();
+            }
         });
+
+
 
         webview.loadUrl(url_load);
     }
@@ -150,6 +166,7 @@ public class OauthActivity extends AppCompatActivity {
     }
 
     private void fetchOauthTokenWithCode(String code) {
+        baseRestClient.showProgDialog();
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder url = HttpUrl.parse(GITHUB_OAUTH).newBuilder();
         url.addQueryParameter("client_id", CLIENT_ID);
@@ -177,6 +194,7 @@ public class OauthActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
 
                 Log.v(TAG,"headers : " +response.headers());
+                baseRestClient.hideProgDialog();
                 if (response.isSuccessful()) {
                     String JsonData = response.body().string();
 
@@ -207,6 +225,7 @@ public class OauthActivity extends AppCompatActivity {
                 }
 
                 finishThisActivity(ResultCode.SUCCESS);
+                finish();
                 startActivity(new Intent(OauthActivity.this, UserActivity.class));
             }
         });
@@ -223,11 +242,7 @@ public class OauthActivity extends AppCompatActivity {
     }
 
     private void storeToSharedPreference(String auth_token) {
-        SharedPreferences prefs = getSharedPreferences("github_prefs", MODE_PRIVATE);
-        SharedPreferences.Editor edit = prefs.edit();
-
-        edit.putString("oauth_token", auth_token);
-        edit.apply();
+        AppSharedPreference.putString("oauth_token",auth_token,OauthActivity.this);
     }
 
     /**

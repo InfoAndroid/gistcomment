@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.infoandroid.gistcomment.LoginActivity;
 import com.infoandroid.gistcomment.R;
 import com.infoandroid.gistcomment.model.GistRepo;
+import com.infoandroid.gistcomment.preferences.AppSharedPreference;
 
 import java.util.List;
 
@@ -71,6 +72,7 @@ public class GistRepoAdapter extends RecyclerView.Adapter<GistRepoAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                    AppSharedPreference.putString("id",list.get(getAdapterPosition()).getId().toString(),mContext);
                 }
             });
         }

@@ -38,35 +38,6 @@ public class RestClass extends BaseRestClient{
         return this;
     }
 
-   /* public void postJsonRequest(final int apiID, String postUrl, String auth,String postBody) throws IOException {
-        showProgDialog("Loding...");
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = RequestBody.create(JSON, postBody);
-        Request request = new Request.Builder()
-                .url("https://api.github.com/gists/cc05a5802850c1e109d932adb59b01de/comments")
-                .addHeader("access","Basic "+auth)
-                .addHeader("Cache-Control", "no-cache")
-                .post(body)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                call.cancel();
-                responceListeners.onFailearResponce(apiID,e.getMessage());
-                hideProgDialog();
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String JsonData = response.body().string();
-                Log.d("TAG", JsonData);
-                responceListeners.onSuccessResponce(apiID,JsonData);
-                hideProgDialog();
-            }
-        });
-    }
-*/
 
     public void postJsonRequest(final int apiID, String postUrl, String auth,String postBody) throws IOException {
         showProgDialog("Loding...");
@@ -119,66 +90,6 @@ public class RestClass extends BaseRestClient{
             }
         });
     }
-
-    public void synchronousGet(final int apiID,String getUrl){
-        OkHttpHandler okHttpHandler = new OkHttpHandler();
-        okHttpHandler.execute(getUrl);
-    }
-
-    public class OkHttpHandler extends AsyncTask<String, Void, String> {
-
-        OkHttpClient client = new OkHttpClient();
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            Request.Builder builder = new Request.Builder();
-            builder.url(params[0]);
-            Request request = builder.build();
-
-            try {
-                Response response = client.newCall(request).execute();
-                return response.body().string();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-        }
-    }
-
-    public void multipartRequest(final int apiID,String getUrl) throws Exception {
-        OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("title", "Square Logo")
-                .addFormDataPart("image", "logo-square.png",
-                        RequestBody.create(MEDIA_TYPE_PNG, new File("website/static/logo-square.png")))
-                .build();
-
-        Request request = new Request.Builder()
-                .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-                .url("https://api.imgur.com/3/image")
-                .post(requestBody)
-                .build();
-
-        try {
-                Response response = client.newCall(request).execute() ;
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-            System.out.println(response.body().string());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
-    }
-
 
 
 }

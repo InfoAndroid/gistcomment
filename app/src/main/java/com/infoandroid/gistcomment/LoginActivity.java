@@ -24,8 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
-    @BindView(R.id.link_signup) TextView _signupLink;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +39,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        _signupLink.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     public void login() {
@@ -67,17 +59,17 @@ public class LoginActivity extends AppCompatActivity {
         AppSharedPreference.putString("name",email,this);
         AppSharedPreference.putString("pass",password,this);
 
-        // TODO: Implement your own authentication logic here.
 
-        new android.os.Handler().postDelayed(
+        onLoginSuccess();
+       /* new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
+
                         // onLoginFailed();
 
                     }
-                }, 3000);
+                }, 3000);*/
     }
 
 

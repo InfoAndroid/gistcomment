@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main_qr);
     hasCameraPermission = RuntimePermissionUtil.checkPermissonGranted(this, cameraPerm);
 
-    text = findViewById(R.id.code_info);
+
 
     final Button stateBtn = findViewById(R.id.btn_start_stop);
     // change of reader state in dynamic
@@ -70,13 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
     stateBtn.setVisibility(View.VISIBLE);
 
-    Button restartbtn = findViewById(R.id.btn_restart_activity);
-    restartbtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        restartActivity();
-      }
-    });
 
     // Setup SurfaceView
     // -----------------
