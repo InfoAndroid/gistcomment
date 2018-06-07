@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.infoandroid.gistcomment.view.CommentActivity;
 import com.infoandroid.gistcomment.view.LoginActivity;
 import com.infoandroid.gistcomment.R;
 import com.infoandroid.gistcomment.model.GistRepo;
@@ -94,7 +95,13 @@ public class GistRepoAdapter extends RecyclerView.Adapter<GistRepoAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     AppSharedPreference.putString("id",list.get(getAdapterPosition()).getId().toString(),mContext);
-                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                    String id = AppSharedPreference.getString("name","",mContext);
+                    String password = AppSharedPreference.getString("pass","",mContext);
+                    if (id.equals(null)||id.equals("")||password.equals(null)||password.equals("")) {
+                        mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                    }else {
+                        mContext.startActivity(new Intent(mContext, CommentActivity.class));
+                    }
 
                 }
             });

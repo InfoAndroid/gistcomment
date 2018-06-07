@@ -61,15 +61,19 @@ public class RestClass extends BaseRestClient{
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String JsonData = response.body().string();
-                Log.d("TAG", JsonData);
-                responceListeners.onSuccessResponce(apiID,JsonData);
                 hideProgDialog();
+                if (response.code()==401){
+                    responceListeners.onFailearResponce(apiID,response.message());
+                }else {
+                    String JsonData = response.body().string();
+                    Log.d("TAG", JsonData);
+                    responceListeners.onSuccessResponce(apiID,JsonData);
+                }
+
+
             }
         });
     }
-
-
     public void asynchronousGet(final int apiID, String getUrl, String token) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
