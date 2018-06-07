@@ -1,4 +1,4 @@
-package com.infoandroid.gistcomment;
+package com.infoandroid.gistcomment.view;
 
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.infoandroid.gistcomment.OkhttpRest.ApiIds;
 import com.infoandroid.gistcomment.OkhttpRest.ResponceListeners;
 import com.infoandroid.gistcomment.OkhttpRest.RestClass;
+import com.infoandroid.gistcomment.R;
 import com.infoandroid.gistcomment.preferences.AppSharedPreference;
 
 import org.json.JSONException;
@@ -31,7 +31,7 @@ public class CommentActivity extends AppCompatActivity implements ResponceListen
      @BindView(R.id.rootView)
      ConstraintLayout rootView;
 
-        RestClass restClass;
+     RestClass restClass;
 
 
     @Override

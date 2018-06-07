@@ -1,31 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
     >
 
-
-    <TextView
-        android:id="@+id/title"
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16dp"
-        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/genre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title" />
+        card_view:cardCornerRadius="4dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10"
+                >
+                <TextView
+                    android:id="@+id/TxtDescription"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Description"
+               />
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:maxLines="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Helo"
+                    />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/colorPrimaryDark" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10"
+                >
+                <TextView
+                    android:id="@+id/TxtOwner"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Owner"
+                    />
+                <TextView
+                    android:id="@+id/tvOwner"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:maxLines="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Helo"
+               />
+            </LinearLayout>
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10"
+                >
+                <TextView
+                    android:id="@+id/TxtCreated"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Created"
+                     />
+                <TextView
+                    android:id="@+id/tvCreated"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:maxLines="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Helo"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10"
+                >
+                <TextView
+                    android:id="@+id/Txtupdate"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Last Update"
+                    />
+                <TextView
+                    android:id="@+id/tvUpdate"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:maxLines="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Helo"
+                 />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10"
+                android:layout_gravity="right"
+                android:gravity="right"
+                >
+                <TextView
+                    android:id="@+id/TxtComment"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Comment : "
+                  />
+                <TextView
+                    android:id="@+id/tvComment"
+
+                    android:layout_width="wrap_content"
+                    android:maxLines="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp"
+                    android:text="Helo"
+                   />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</android.support.design.widget.CoordinatorLayout>

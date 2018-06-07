@@ -23,7 +23,7 @@
       >
 
     <Button
-        android:id="@+id/btn_start_stop"
+        android:id="@+id/btnStartStop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="stop_start_qreader"

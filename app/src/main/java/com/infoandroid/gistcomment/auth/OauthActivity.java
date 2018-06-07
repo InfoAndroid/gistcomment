@@ -2,7 +2,6 @@ package com.infoandroid.gistcomment.auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import android.webkit.WebViewClient;
 
 import com.infoandroid.gistcomment.OkhttpRest.BaseRestClient;
 import com.infoandroid.gistcomment.R;
-import com.infoandroid.gistcomment.UserActivity;
+import com.infoandroid.gistcomment.view.UserActivity;
 import com.infoandroid.gistcomment.preferences.AppSharedPreference;
 
 import org.json.JSONException;
@@ -25,6 +24,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -41,27 +42,31 @@ public class OauthActivity extends AppCompatActivity {
     public static String CLIENT_ID = "";
     public static String CLIENT_SECRET = "";
     public static String ACTIVITY_NAME = "";
-    BaseRestClient  baseRestClient;
+    private BaseRestClient  baseRestClient;
 
     private static final String TAG = "github-oauth";
 
     public String scopeAppendToUrl = "";
     public List<String> scopeList;
 
-    private WebView webview;
-
     private boolean clearDataBeforeLaunch = false;
     private boolean isScopeDefined = false;
     private boolean debug = false;
+
+    @BindView(R.id.webview)
+     WebView webview;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oauth);
+        ButterKnife.bind(this);
+
         scopeList = new ArrayList<>();
         scopeAppendToUrl = "";
         baseRestClient = new BaseRestClient(this);
+
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             CLIENT_ID = intent.getStringExtra("id");
@@ -96,7 +101,7 @@ public class OauthActivity extends AppCompatActivity {
             clearDataBeforeLaunch();
         }
 
-        webview = (WebView) findViewById(R.id.webview);
+
 
         if (webview == null) {
             return;

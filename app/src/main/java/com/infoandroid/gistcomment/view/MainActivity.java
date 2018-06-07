@@ -1,20 +1,6 @@
-/*
- * Copyright (C) 2016 Nishant Srivastava
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
-package com.infoandroid.gistcomment;
+
+package com.infoandroid.gistcomment.view;
 
 import android.Manifest;
 import android.content.Intent;
@@ -25,22 +11,28 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
+import com.infoandroid.gistcomment.QRcode.QRDataListener;
+import com.infoandroid.gistcomment.QRcode.QREader;
+import com.infoandroid.gistcomment.R;
+import com.infoandroid.gistcomment.RPResultListener;
+import com.infoandroid.gistcomment.RuntimePermissionUtil;
 import com.infoandroid.gistcomment.preferences.AppSharedPreference;
 
-import github.nisrulz.qreader.QRDataListener;
-import github.nisrulz.qreader.QREader;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity {
 
   private static final String cameraPerm = Manifest.permission.CAMERA;
 
-  // UI
-  private TextView text;
+  @BindView(R.id.btnStartStop)
+  public Button stateBtn;
 
-  // QREader
-  private SurfaceView mySurfaceView;
+  @BindView(R.id.camera_view)
+   public SurfaceView mySurfaceView;
+
   private QREader qrEader;
 
   boolean hasCameraPermission = false;
@@ -49,11 +41,10 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main_qr);
+    ButterKnife.bind(this);
     hasCameraPermission = RuntimePermissionUtil.checkPermissonGranted(this, cameraPerm);
 
 
-
-    final Button stateBtn = findViewById(R.id.btn_start_stop);
     // change of reader state in dynamic
     stateBtn.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -69,12 +60,6 @@ public class MainActivity extends AppCompatActivity {
     });
 
     stateBtn.setVisibility(View.VISIBLE);
-
-
-    // Setup SurfaceView
-    // -----------------
-    mySurfaceView = findViewById(R.id.camera_view);
-
     if (hasCameraPermission) {
       // Setup QREader
       setupQREader();
@@ -98,12 +83,6 @@ public class MainActivity extends AppCompatActivity {
         AppSharedPreference.putString("url",data,MainActivity.this);
         startActivity(new Intent(MainActivity.this, HomeActivity.class));
         finish();
-       /* text.post(new Runnable() {
-          @Override
-          public void run() {
-            text.setText(data);
-          }
-        });*/
       }
     }).facing(QREader.BACK_CAM)
         .enableAutofocus(true)

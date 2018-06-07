@@ -46,7 +46,7 @@ public class RestClass extends BaseRestClient{
         RequestBody body = RequestBody.create(JSON, postBody);
         final String basic = "Basic " + Base64.encodeToString(auth.getBytes(), Base64.NO_WRAP);
         Request request = new Request.Builder()
-                .url("https://api.github.com/gists/cc05a5802850c1e109d932adb59b01de/comments")
+                .url(postUrl)
                 .addHeader("Authorization",basic)
                 .post(body)
                 .build();

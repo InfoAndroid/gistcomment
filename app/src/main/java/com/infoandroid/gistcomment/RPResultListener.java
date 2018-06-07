@@ -1,7 +1,7 @@
 
 package com.infoandroid.gistcomment;
 
-interface RPResultListener {
+public interface RPResultListener {
   void onPermissionGranted();
 
   void onPermissionDenied();

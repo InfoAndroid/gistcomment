@@ -1,6 +1,5 @@
-package com.infoandroid.gistcomment;
+package com.infoandroid.gistcomment.view;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,6 +14,7 @@ import com.google.gson.Gson;
 import com.infoandroid.gistcomment.OkhttpRest.ApiIds;
 import com.infoandroid.gistcomment.OkhttpRest.ResponceListeners;
 import com.infoandroid.gistcomment.OkhttpRest.RestClass;
+import com.infoandroid.gistcomment.R;
 import com.infoandroid.gistcomment.adapter.GistRepoAdapter;
 import com.infoandroid.gistcomment.model.GistRepo;
 import com.infoandroid.gistcomment.preferences.AppSharedPreference;
@@ -100,6 +100,13 @@ public class UserActivity extends AppCompatActivity implements ResponceListeners
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.exit(0);
 
     }
 

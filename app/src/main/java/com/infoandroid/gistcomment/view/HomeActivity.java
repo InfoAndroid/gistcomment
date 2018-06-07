@@ -1,4 +1,4 @@
-package com.infoandroid.gistcomment;
+package com.infoandroid.gistcomment.view;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +22,7 @@ public class HomeActivity extends AppCompatActivity {
                 .withClientSecret(GITHUB_SECRET)
                 .withContext(HomeActivity.this)
                 .packageName("com.infoandroid.gistcomment")
-                .nextActivity("com.infoandroid.gistcomment.UserActivity")
+                .nextActivity("com.infoandroid.gistcomment.view.UserActivity")
                 .debug(true)
                 .execute();
 

@@ -5,7 +5,7 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CommentActivity">
+    tools:context=".view.CommentActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,8 +14,11 @@
     <EditText
         android:id="@+id/edt_comment"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:hint="comment"
+        android:padding="@dimen/dimen_10"
+        android:gravity="start|top"
+        android:background="@drawable/rounded_border_edittext"
         />
 
     <Button

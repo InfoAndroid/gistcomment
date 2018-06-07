@@ -41,8 +41,6 @@ ext {
     libGithubRepo = 'nisrulz/qreader'
 
 
-    libModuleName = 'qreader'
-    libModuleDesc =
-            'Android library that uses google\'s mobile vision api and simplify the QR code reading process'
-    libBintrayName = 'com.github.nisrulz:qreader'
+    libModuleDesc = 'Android library that uses google\'s mobile vision api and simplify the QR code reading process'
+
 }

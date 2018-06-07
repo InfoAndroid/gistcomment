@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.infoandroid.gistcomment.LoginActivity;
+import com.infoandroid.gistcomment.view.LoginActivity;
 import com.infoandroid.gistcomment.R;
 import com.infoandroid.gistcomment.model.GistRepo;
 import com.infoandroid.gistcomment.preferences.AppSharedPreference;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -46,7 +49,11 @@ public class GistRepoAdapter extends RecyclerView.Adapter<GistRepoAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         gistRepo=list.get(position);
 
-        holder.title.setText( gistRepo.getDescription().toString());
+        holder.tvDescription.setText( gistRepo.getDescription().toString());
+        holder.tvOwner.setText( gistRepo.getOwner().getLogin().toString());
+        holder.tvCreated.setText( gistRepo.getCreatedAt().toString());
+        holder.tvUpdate.setText( gistRepo.getUpdatedAt().toString());
+        holder.tvComment.setText( gistRepo.getComments().toString());
     }
 
     @Override
@@ -61,18 +68,34 @@ public class GistRepoAdapter extends RecyclerView.Adapter<GistRepoAdapter.ViewHo
 
 
     public  class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tvDescription)
+         TextView tvDescription;
 
-        public TextView title;
+        @BindView(R.id.tvOwner)
+         TextView tvOwner;
+
+        @BindView(R.id.tvCreated)
+         TextView tvCreated;
+
+        @BindView(R.id.tvUpdate)
+         TextView tvUpdate;
+
+        @BindView(R.id.tvComment)
+         TextView tvComment;
+
+
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.title);
+            ButterKnife.bind(this, itemView);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
                     AppSharedPreference.putString("id",list.get(getAdapterPosition()).getId().toString(),mContext);
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
+
                 }
             });
         }
