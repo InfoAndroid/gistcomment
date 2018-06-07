@@ -60,8 +60,12 @@ public class CommentActivity extends AppCompatActivity implements ResponceListen
                     String password = AppSharedPreference.getString("pass","",CommentActivity.this);;
                     String id = AppSharedPreference.getString("id","",CommentActivity.this);;
                     String credentials = username + ":" + password;
-                    restClass.callback(CommentActivity.this).postJsonRequest(ApiIds.API_USER_LIST, "https://api.github.com/gists/"+id+"/comments",credentials,comment);
-                } catch (IOException e) {
+                    if (!comment.equals("")&&!comment.equals(null)) {
+                        restClass.callback(CommentActivity.this).postJsonRequest(ApiIds.API_USER_LIST, "https://api.github.com/gists/" + id + "/comments", credentials, comment);
+                    }else {
+                        Toast.makeText(CommentActivity.this,"Empty Comment ",Toast.LENGTH_SHORT).show();
+                    }
+                    } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
